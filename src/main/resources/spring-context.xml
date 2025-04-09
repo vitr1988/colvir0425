@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="calculator" class="com.colvir.webinar2.impl.CalculatorImpl"/>
+
+    <bean id="paramCalculator" class="com.colvir.webinar2.impl.ParametrizedCalculatorImpl">
+        <constructor-arg name="a" value="-15"/>
+        <constructor-arg name="b" value="10"/>
+    </bean>
+
+</beans>
