@@ -23,7 +23,7 @@ public class LoggingAspect {
         System.out.println("Повторное напоминание: вызван метод print*");
     }
 
-    @Before("execution(public void com.colvir.webinar3.ClientService.print*())")
+    @Before("execution(public void com.colvir.webinar3.service.ClientService.print*())")
     public void printPatternForClientService() {
         System.out.println("Вызван printAll для ClientService");
     }

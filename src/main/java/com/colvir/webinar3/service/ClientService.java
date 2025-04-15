@@ -19,4 +19,8 @@ public class ClientService {
     public String getClientName() {
         return clientName;
     }
+
+    public void printAll() {
+        System.out.println("printAll from ClientService");
+    }
 }
