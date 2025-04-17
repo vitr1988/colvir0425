@@ -12,18 +12,18 @@ import java.util.Arrays;
 @Component
 public class BlockedAspect {
 
-    @Around("@annotation(com.colvir.webinar4.annotation.Blocked)")
-//    @Around("@annotation(blocked)")
-//    public Object invoke(ProceedingJoinPoint joinPoint, Blocked blocked) throws Throwable {
-    public Object invoke(ProceedingJoinPoint joinPoint) throws Throwable {
+//    @Around("@annotation(com.colvir.webinar4.annotation.Blocked)")
+    @Around("@annotation(blocked)")
+    public Object invoke(ProceedingJoinPoint joinPoint, Blocked blocked) throws Throwable {
+//    public Object invoke(ProceedingJoinPoint joinPoint) throws Throwable {
         System.out.println("Method name: " + joinPoint.getSignature().getName());
         System.out.println("Method args: " + Arrays.toString(joinPoint.getArgs()));
 //        return joinPoint.proceed();
 //        return null;
-        throw new IllegalArgumentException("Method should not be executed");
-//                blocked.value().isEmpty()
-//                        ? "Method should not be executed"
-//                        : blocked.value()
-//        );
+        throw new IllegalArgumentException(
+                blocked.value().isEmpty()
+                        ? "Method should not be executed"
+                        : blocked.value()
+        );
     }
 }
