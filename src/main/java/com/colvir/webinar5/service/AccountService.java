@@ -1,28 +1,46 @@
 package com.colvir.webinar5.service;
 
+import com.colvir.webinar5.dto.AccountDto;
+import com.colvir.webinar5.mapper.AccountMapper;
 import com.colvir.webinar5.model.Account;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
+@RequiredArgsConstructor
 public class AccountService {
 
     @Getter
     public List<Account> accounts = new CopyOnWriteArrayList<>();
 
-    public void add(Account account) {
-        accounts.add(account);
+    private final AccountMapper accountMapper;
+
+    private AtomicLong counter = new AtomicLong();
+
+    public Optional<AccountDto> getById(Long id) {
+        return accounts.stream().filter(account -> account.getId().equals(id)).findFirst().map(accountMapper::toDto);
     }
 
-    public void remove(Account account) {
-        accounts.remove(account);
+    public void save(AccountDto account) {
+        if (account.getId() == null) {
+            account.setId(counter.incrementAndGet());
+            accounts.add(accountMapper.toEntity(account));
+        }
+        else {
+            getById(account.getId())
+                    .map(accountMapper::toEntity)
+                    .ifPresent(it -> accounts.set(accounts.indexOf(it), accountMapper.toEntity(account)));
+        }
     }
 
-    public void update(Account account) {
-        int index = accounts.indexOf(account);
-        accounts.set(index, account);
+    public Optional<?> delete(AccountDto account) {
+        boolean remove = accounts.remove(accountMapper.toEntity(account));
+        return remove ? Optional.of(account) : Optional.empty();
     }
 }

@@ -11,4 +11,5 @@ public class Account {
     private String number;
     private String clientName;
     private BigDecimal balance;
+    private String currency;
 }

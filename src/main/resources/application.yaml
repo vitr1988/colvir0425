@@ -11,5 +11,13 @@ app:
 
 server:
   port: 8090
-  servlet:
-    context-path: /app
+#  servlet:
+#    context-path: /app
+
+springdoc:
+  swagger-ui:
+    use-root-path: true
+    path: /swagger-ui.html
+  #  api-docs:
+  #    path: /api-docs
+  packages-to-scan: com.colvir.webinar5
