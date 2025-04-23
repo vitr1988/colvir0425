@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -17,7 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AccountService {
 
     @Getter
-    public List<Account> accounts = new CopyOnWriteArrayList<>();
+    public List<Account> accounts = List.of(new Account(1L, "1111", "Vitalii", BigDecimal.ZERO));//new CopyOnWriteArrayList<>();
 
     private final AccountMapper accountMapper;
 

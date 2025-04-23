@@ -1,7 +1,8 @@
 package com.colvir.webinar5.controller;
 
 import com.colvir.webinar5.dto.AccountDto;
-import com.colvir.webinar5.model.Account;
+import com.colvir.webinar5.dto.AccountDto;
+import com.colvir.webinar5.mapper.AccountMapper;
 import com.colvir.webinar5.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.Optional;
 public class AccountController {
 
     private final AccountService accountService;
+    private final AccountMapper accountMapper;
 
 //    private final HttpServletRequest request;
 //    private final HttpServletResponse response;

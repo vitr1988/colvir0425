@@ -1,0 +1,10 @@
+spring:
+  main.banner-mode: off
+#  spring.thymeleaf:
+#    prefix: 'classpath:/templates/'
+#    suffix: '.html'
+
+server:
+  port: 8085
+  servlet:
+    context-path: /web

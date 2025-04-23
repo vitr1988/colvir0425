@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 
-@SpringBootApplication
+//@SpringBootApplication
 @EnableConfigurationProperties(AppProperties.class)
 public class SpringBootRunner {
 
