@@ -1,8 +1,6 @@
 package com.colvir.webinar5.controller;
 
 import com.colvir.webinar5.dto.AccountDto;
-import com.colvir.webinar5.dto.AccountDto;
-import com.colvir.webinar5.mapper.AccountMapper;
 import com.colvir.webinar5.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,13 +28,12 @@ import java.util.Optional;
 public class AccountController {
 
     private final AccountService accountService;
-    private final AccountMapper accountMapper;
 
 //    private final HttpServletRequest request;
 //    private final HttpServletResponse response;
 
     @GetMapping
-    public ResponseEntity<List<Account>> getAccounts(@RequestParam Optional<String> filter) {
+    public ResponseEntity<List<AccountDto>> getAccounts(@RequestParam Optional<String> filter) {
         filter.ifPresent(System.out::println);
         return ResponseEntity.ok(accountService.getAccounts());
     }
