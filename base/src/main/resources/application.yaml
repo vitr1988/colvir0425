@@ -1,0 +1,20 @@
+spring:
+  main.banner-mode: off
+  datasource:
+    name: TEST
+
+app:
+  version: 1.0.0
+  digit: 123
+  context:
+    file: /spring-context.xml
+
+server:
+  port: 8090
+  servlet:
+    context-path: /app
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan: com.colvir.webinar5

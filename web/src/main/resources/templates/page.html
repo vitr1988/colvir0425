@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Заголовок страницы</title>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet">
+</head>
+<body class="body" style="color: black">
+<!-- комментарий -->
+Привет, мир!
+<div class="holder">
+    Здесь мог быть Ваш текст!
+</div>
+<span th:text="${title}">This is welcome page where you can</span>
+</body>
+</html>
