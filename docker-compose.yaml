@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+    depends_on:
+      - app2
+    ports:
+      - '8090:8090'
+
+  app2:
+    image: docker.io/colvir/spring-boot:latest
+    ports:
+      - "8081:8090"
