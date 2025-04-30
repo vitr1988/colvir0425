@@ -1,7 +1,10 @@
 spring:
   main.banner-mode: off
   datasource:
-    name: TEST
+    url: jdbc:postgresql://localhost:5432/colvir
+    username: colvir
+    password: colvir
+    driver-class-name: org.postgresql.Driver
 
 app:
   version: 1.0.0
