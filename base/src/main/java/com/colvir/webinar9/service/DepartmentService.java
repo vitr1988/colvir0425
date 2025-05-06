@@ -25,8 +25,15 @@ public class DepartmentService {
         return departmentDao.findAll().stream().map(departmentMapper::toDto).collect(Collectors.toList());
     }
 
-    public DepartmentDto save(DepartmentDto department) {
-        return departmentMapper.toDto(departmentDao.save(departmentMapper.toEntity(department)));
+    public DepartmentDto save(DepartmentDto departmentDto) {
+        Long departmentId = departmentDto.getId();
+        if (departmentId == null) {
+            return departmentMapper.toDto(departmentDao.save(departmentMapper.toEntity(departmentDto)));
+        } else {
+            Department existingDepartment = departmentDao.getById(departmentId);
+            departmentMapper.update(departmentDto, existingDepartment);
+            return departmentMapper.toDto(departmentDao.save(existingDepartment));
+        }
     }
 
     public DepartmentDto save(Department department) {

@@ -1,7 +1,6 @@
 package com.colvir.webinar9.controller;
 
 import com.colvir.webinar9.dto.DepartmentDto;
-import com.colvir.webinar9.model.Department;
 import com.colvir.webinar9.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,7 @@ public class DepartmentController {
     }
 
     @PutMapping("/{id}")
-    public DepartmentDto save(@PathVariable Long id, @RequestBody Department departmentDto) {
+    public DepartmentDto save(@PathVariable Long id, @RequestBody DepartmentDto departmentDto) {
         departmentDto.setId(id);
         return departmentService.save(departmentDto);
     }
