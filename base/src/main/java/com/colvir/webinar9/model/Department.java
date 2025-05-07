@@ -7,12 +7,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Data
 @Entity
 @DynamicUpdate
+@NoArgsConstructor
 @Table(name = "departments")
 public class Department {
 
@@ -28,4 +31,11 @@ public class Department {
     private String name;
 
     private Integer count;
+
+    @Transient
+    private Integer counter;
+
+    public Department(String name) {
+        this.name = name;
+    }
 }
