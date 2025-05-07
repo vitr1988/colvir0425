@@ -1,7 +1,7 @@
-package com.colvir.webinar7.controller;
+package com.colvir.webinar8.controller;
 
-import com.colvir.webinar7.dto.EmployeeDto;
-import com.colvir.webinar7.service.EmployeeService;
+import com.colvir.webinar8.dto.EmployeeDto;
+import com.colvir.webinar8.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;

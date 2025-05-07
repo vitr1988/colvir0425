@@ -1,14 +1,12 @@
-package com.colvir.webinar7.dao;
+package com.colvir.webinar8.dao;
 
-import com.colvir.webinar7.model.Department;
-import com.colvir.webinar7.model.Employee;
+import com.colvir.webinar8.model.Department;
+import com.colvir.webinar8.model.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor

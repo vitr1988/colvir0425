@@ -1,9 +1,10 @@
-package com.colvir.webinar7.model;
+package com.colvir.webinar8.dto;
 
 import lombok.Data;
 
 @Data
-public class Department {
+public class DepartmentDto {
+
     private Integer id;
     private String name;
 }

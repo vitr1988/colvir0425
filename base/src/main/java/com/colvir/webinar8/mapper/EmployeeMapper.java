@@ -1,7 +1,7 @@
-package com.colvir.webinar7.mapper;
+package com.colvir.webinar8.mapper;
 
-import com.colvir.webinar7.dto.EmployeeDto;
-import com.colvir.webinar7.model.Employee;
+import com.colvir.webinar8.dto.EmployeeDto;
+import com.colvir.webinar8.model.Employee;
 import org.mapstruct.Mapper;
 
 import java.util.List;
