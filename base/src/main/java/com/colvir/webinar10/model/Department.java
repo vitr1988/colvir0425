@@ -7,12 +7,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "departments")
 public class Department {
 
@@ -26,4 +28,10 @@ public class Department {
 //    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
     @OneToMany(mappedBy = "department")
     private List<Employee> employees;
+
+    public Department(Long id, String name) {
+        this.id = id;
+        this.name = name;
+        this.count = 0;
+    }
 }

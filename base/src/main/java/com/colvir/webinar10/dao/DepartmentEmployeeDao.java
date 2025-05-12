@@ -1,6 +1,5 @@
 package com.colvir.webinar10.dao;
 
-import com.colvir.webinar10.model.Department;
 import com.colvir.webinar10.model.Employee;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,17 @@ public class DepartmentEmployeeDao {
         return em.find(Employee.class, id);
     }
 
+    public Employee save(Employee employee) {
+        if (employee.getId() == null) {
+            em.persist(employee);
+            return employee;
+        } else {
+            Employee merge = em.merge(employee);
+            em.flush();
+            return merge;
+        }
+    }
+
     public List<Employee> getEmployeesByDepartmentId(Long departmentId) {
         return em.createQuery(
                 """
@@ -31,7 +41,7 @@ public class DepartmentEmployeeDao {
 //                        where d.id = :departmentId
 //                        """
                 , Employee.class
-                ).setParameter("departmentId", departmentId).getResultList();
+        ).setParameter("departmentId", departmentId).getResultList();
 //        return em.find(Department.class, departmentId).getEmployees();
     }
 }
