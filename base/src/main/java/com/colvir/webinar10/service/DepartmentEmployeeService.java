@@ -4,6 +4,7 @@ import com.colvir.webinar10.dao.DepartmentEmployeeDao;
 import com.colvir.webinar10.dto.EmployeeDto;
 import com.colvir.webinar10.model.Department;
 import com.colvir.webinar10.model.Employee;
+import com.colvir.webinar10.model.HasEmployeeAttribute;
 import com.colvir.webinar10.repository.DepartmentRepository;
 import com.colvir.webinar10.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,32 +27,39 @@ import java.util.List;
 public class DepartmentEmployeeService {
 //    private final DepartmentEmployeeDao dao;
 
+    private final TransactionTemplate transactionTemplate;
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
 
     @Setter(onMethod_ = {@Autowired, @Lazy})
     private DepartmentEmployeeService self;
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public EmployeeDto getEmployeeById(Long id){
 //        Employee employee = dao.getEmployeeById(id);
+//        transactionTemplate.execute(status -> {
+//            //
+//        });
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee with id " + id + " not found"));
         EmployeeDto employeeDto = self.mapDto(employee);
         return employeeDto;
     }
 
-//    @Transactional
-    public EmployeeDto mapDto(Employee employee) {
-//        employee.setEmail("test@test.com");
-//        employee = dao.save(employee);
+//    @Transactional(rollbackFor = IOException.class, noRollbackFor = NullPointerException.class)//(propagation = Propagation.REQUIRES_NEW)
+    public EmployeeDto mapDto(final Employee employee) {
+        employee.setEmail("test@test.com");
+        transactionTemplate.executeWithoutResult(status -> {
+            employeeRepository.save(employee);
+        });
+        Department department = employee.getDepartment();
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId(employee.getId());
         employeeDto.setName(employee.getName());
         employeeDto.setLastName(employee.getLastName());
         employeeDto.setEmail(employee.getEmail());
-        employeeDto.setDepartmentId(employee.getDepartment().getId());
-        employeeDto.setDepartmentName(employee.getDepartment().getName());
+        employeeDto.setDepartmentId(department.getId());
+        employeeDto.setDepartmentName(transactionTemplate.execute(status -> department.getName()));
         return employeeDto;
     }
 
@@ -68,8 +80,14 @@ public class DepartmentEmployeeService {
 
     @Transactional(readOnly = true)
     public List<EmployeeDto> getEmployeeByDepartmentId(Long departmentId){
-        List<Employee> employeesByDepartmentId = employeeRepository.findByDepartmentId(departmentId);
-        return employeesByDepartmentId.stream().map(this::mapDto).toList();
+//        List<Employee> employeesByDepartmentId = employeeRepository.findByDepartmentId(departmentId);
+//        return employeesByDepartmentId.stream().map(this::mapDto).toList();
+        return departmentRepository.findById(departmentId)
+                .map(Department::getEmployees)
+                .stream()
+                .flatMap(List::stream)
+                .map(this::mapDto).toList();
+//        return employeeRepository.findByDepId(departmentId);
     }
 
     @Transactional
@@ -97,5 +115,13 @@ public class DepartmentEmployeeService {
     @Transactional(readOnly = true)
     public List<EmployeeDto> findAll(Pageable pageable){
         return employeeRepository.findAll(pageable).map(this::mapDto).toList();
+    }
+
+    @Transactional
+    public void updateEmail(Long id, String email) {
+        employeeRepository.findById(id).ifPresent(it -> {
+            it.setEmail(email);
+            employeeRepository.save(it);
+        });
     }
 }

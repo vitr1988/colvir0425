@@ -49,4 +49,9 @@ public class EmployeeController {
     public void deleteEmployeeById(@PathVariable Long id) {
         service.deleteById(id);
     }
+
+    @PostMapping("/{id}/email")
+    public void updateEmail(@PathVariable Long id, @RequestParam String email) {
+        service.updateEmail(id, email);
+    }
 }

@@ -1,0 +1,59 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="Vitalii Ivanov" id="Create-table-department">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="department"/>
+            </not>
+        </preConditions>
+
+        <createSequence sequenceName="department_id_seq" startValue="1" incrementBy="1" cycle="true"/>
+
+        <createTable tableName="department">
+            <column name="id" type="bigint" defaultValueSequenceNext="department_id_seq">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="dep_name" type="varchar(255)">
+                <constraints nullable="false"/>
+<!--                <constraints nullable="false" unique="true"/>-->
+            </column>
+            <column name="count" type="bigint"/>
+        </createTable>
+
+        <sql><![CDATA[
+            alter sequence department_id_seq owned by department.id;
+        ]]></sql>
+
+        <addUniqueConstraint tableName="department" columnNames="dep_name"/>
+
+    </changeSet>
+
+    <changeSet author="Vitalii Ivanov" id="Create-table-employee">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="employee"/>
+            </not>
+        </preConditions>
+        <createTable tableName="employee">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)"/>
+            <column name="department_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_employee_department"
+                             references="department(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

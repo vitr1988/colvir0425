@@ -4,11 +4,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import static com.colvir.webinar10.model.Department.EMPLOYEE_ENTITY_GRAPH_NAME;
 
 import java.util.List;
 
@@ -16,7 +20,10 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "departments")
+@NamedEntityGraph(name = EMPLOYEE_ENTITY_GRAPH_NAME,  attributeNodes = {@NamedAttributeNode("employees")})
 public class Department {
+
+    public static final String EMPLOYEE_ENTITY_GRAPH_NAME = "Departments.employees";
 
     @Id
     private Long id;
