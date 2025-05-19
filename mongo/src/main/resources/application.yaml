@@ -1,0 +1,9 @@
+spring:
+  main.banner-mode: off
+  mongodb:
+    uri: mongodb://localhost:27017/staff
+
+server:
+  port: 8095
+  servlet:
+    context-path: /mongo

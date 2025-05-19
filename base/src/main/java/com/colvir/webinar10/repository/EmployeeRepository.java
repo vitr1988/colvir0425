@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 //@Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends JpaRepositoryWithEntityManager<Employee, Long> {
 
     @Query(value = """
                 select e from Employee e
@@ -65,4 +65,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             """)
     @Modifying
     void updateEmail(Long id, String email);
+
+    default List<Employee> findByDepartmentIdAndLastName(Long departmentId, String lastName) {
+        return getEntityManager().createQuery("""
+            select e from Employee e
+            where e.department.id = :departmentId
+            and e.lastName = :lastName
+        """, Employee.class).getResultList();
+    }
 }
