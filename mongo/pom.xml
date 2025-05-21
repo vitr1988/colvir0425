@@ -2,11 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+    <modelVersion>${relmongo.version}</modelVersion>
 
     <groupId>com.colvir</groupId>
     <artifactId>mongo</artifactId>
     <version>1.0.0</version>
+    <properties>
+        <relmongo.version>4.0.0</relmongo.version>
+    </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -30,6 +33,13 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.kaiso.relmongo</groupId>
+            <artifactId>relmongo</artifactId>
+            <version>${relmongo.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

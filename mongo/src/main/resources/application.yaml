@@ -1,7 +1,8 @@
 spring:
   main.banner-mode: off
   mongodb:
-    uri: mongodb://localhost:27017/staff
+#    uri: mongodb://localhost:27017/staff
+    uri: mongodb+srv://vitrivanov:1234@cluster0.t1r3ogk.mongodb.net/staff
 
 server:
   port: 8095

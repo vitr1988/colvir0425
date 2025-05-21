@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{app.title}">Заголовок страницы</title>
@@ -8,10 +9,18 @@
 <body class="body" style="color: black">
 <!-- комментарий -->
 Привет, мир!
-<div class="holder">
+<!--<div class="holder" sec:authorize="hasAuthority('ROLE_ADMIN')" >-->
+<div class="holder" sec:authorize="hasRole('ADMIN')" >
     Здесь мог быть Ваш текст!
 </div>
-<a th:href="@{page.html}">Перейти на другую страницу</a>
-<a th:href="@{/page}">Перейти на другую страницу</a>
+<a th:href="@{page.html}">Перейти напрямую на страницу</a>
+<a th:href="@{/page}" sec:authorize="isAuthenticated()">Перейти на страницу через контроллер</a>
+
+<div class="loginPanel" sec:authorize="isAuthenticated()">
+    <span class="loginName" sec:authentication="name"></span>
+    <div class="logoutButton">
+        <a th:href="@{/logout}"><img title="Logout" th:src="@{/images/exit.png}"/></a>
+    </div>
+</div>
 </body>
 </html>

@@ -3,6 +3,12 @@ spring:
 #  spring.thymeleaf:
 #    prefix: 'classpath:/templates/'
 #    suffix: '.html'
+  security:
+    user:
+      name: admin
+      password: admin
+      roles:
+        - ADMIN
 
 server:
   port: 8085

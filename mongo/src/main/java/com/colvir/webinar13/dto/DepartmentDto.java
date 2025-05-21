@@ -16,6 +16,10 @@ public class DepartmentDto {
         this.name = department.getName();
     }
 
+    public DepartmentDto(String name) {
+        this.name = name;
+    }
+
     public Department as() {
         return new Department(id, name);
     }

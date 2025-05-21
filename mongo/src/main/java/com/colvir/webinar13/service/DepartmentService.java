@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +21,8 @@ public class DepartmentService {
     }
 
     @Transactional(readOnly = true)
-    public DepartmentDto findById(String id) {
-        return new DepartmentDto(departmentRepository.findById(id).orElseThrow());
+    public Optional<DepartmentDto> findById(String id) {
+        return departmentRepository.findById(id).map(DepartmentDto::new);
     }
 
     @Transactional(readOnly = true)
