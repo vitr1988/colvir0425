@@ -1,19 +1,26 @@
 package com.colvir.webinar14.config;
 
+import com.colvir.webinar14.config.filter.TokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration /*extends AbstractHttpConfigurer<SecurityConfiguration, HttpSecurity>*/ {
+
+    private final JwtHelper jwtHelper;
 
 //    private final UserDetailsService userDetailsService;
 
@@ -30,20 +37,24 @@ public class SecurityConfiguration /*extends AbstractHttpConfigurer<SecurityConf
 
     @Bean
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf(AbstractHttpConfigurer::disable)
 //                .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/employees").authenticated()
-//                        .requestMatchers("/api/employees/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/jwt").permitAll()
+//                        .requestMatchers("/api/employees").authenticated()
                         .requestMatchers("/api/employees/**").hasRole("ADMIN")
-                        .requestMatchers("/api/departments").authenticated()
+//                        .requestMatchers("/api/departments").authenticated()
                         .requestMatchers("/api/departments/**").hasAuthority("ROLE_GUEST")
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().permitAll()
-//                                .anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());
-//                .formLogin(Customizer.withDefaults());
+//                .httpBasic(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults())
+                .addFilterBefore(new TokenAuthenticationFilter(jwtHelper), BasicAuthenticationFilter.class)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
+        ;
+
         return http.build();
     }
 

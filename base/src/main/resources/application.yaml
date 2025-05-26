@@ -19,6 +19,8 @@ spring:
 app:
   version: 1.0.0
   digit: 123
+  jwt:
+    secret: theStrongestPasswordAllOverTheWorld
   context:
     file: /spring-context.xml
 

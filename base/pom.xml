@@ -20,6 +20,7 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <mapstruct.defaulComponentModel>spring</mapstruct.defaulComponentModel>
         <springdoc-openapi-ui.version>2.8.6</springdoc-openapi-ui.version>
+        <nimbus-jose-jwt.version>10.3</nimbus-jose-jwt.version>
 
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     </properties>
@@ -87,6 +88,12 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-acl</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>${nimbus-jose-jwt.version}</version>
         </dependency>
 
         <dependency>
