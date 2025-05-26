@@ -2,10 +2,7 @@ package com.colvir.webinar10.repository;
 
 import com.colvir.webinar10.model.Employee;
 import com.colvir.webinar10.model.HasEmployeeAttribute;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,7 +10,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 //@Repository
-public interface EmployeeRepository extends JpaRepositoryWithEntityManager<Employee, Long> {
+public interface EmployeeRepository extends JpaRepositoryWithEntityManager<Employee, Long>
+{
 
     @Query(value = """
                 select e from Employee e

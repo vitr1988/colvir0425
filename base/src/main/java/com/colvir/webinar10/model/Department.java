@@ -3,6 +3,8 @@ package com.colvir.webinar10.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
@@ -26,6 +28,7 @@ public class Department {
     public static final String EMPLOYEE_ENTITY_GRAPH_NAME = "Departments.employees";
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "dep_name")
     private String name;

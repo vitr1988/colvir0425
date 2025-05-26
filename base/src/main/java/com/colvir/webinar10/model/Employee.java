@@ -1,6 +1,7 @@
 package com.colvir.webinar10.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ public class Employee {
 
     private String name;
 
-//    @Column(name = "last_name")
+    @Column(name = "last_name")
     private String lastName;
 
     private String email;

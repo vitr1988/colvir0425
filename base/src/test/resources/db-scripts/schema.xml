@@ -1,0 +1,54 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="Vitalii Ivanov" id="Create-table-departments">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="departments"/>
+            </not>
+        </preConditions>
+
+        <createSequence sequenceName="departments_id_seq" startValue="1" incrementBy="1" cycle="true"/>
+
+        <createTable tableName="departments">
+            <column name="id" type="bigint" defaultValueSequenceNext="departments_id_seq">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="dep_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="count" type="bigint"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="departments" columnNames="dep_name"/>
+
+    </changeSet>
+
+    <changeSet author="Vitalii Ivanov" id="Create-table-employees">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="employees"/>
+            </not>
+        </preConditions>
+        <createTable tableName="employees">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)"/>
+            <column name="department_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_employee_department"
+                             references="departments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

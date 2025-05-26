@@ -1,0 +1,76 @@
+databaseChangeLog:
+  - changeSet:
+      author: "Vitalii Ivanov"
+      id: "Create-table-department"
+      preConditions:
+        onFail: "MARK_RAN"
+        not:
+          tableExists:
+            tableName: "department"
+      changes:
+        - createSequence:
+            sequenceName: "department_id_seq"
+            startValue: 1
+            incrementBy: 1
+            cycle: true
+        - createTable:
+            tableName: "department"
+            columns:
+              - column:
+                  name: "id"
+                  type: "bigint"
+                  defaultValueSequenceNext: "department_id_seq"
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: "dep_name"
+                  type: "varchar(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "count"
+                  type: "bigint"
+        - sql: |
+            alter sequence department_id_seq owned by department.id;
+        - addUniqueConstraint:
+            tableName: "department"
+            columnNames: "dep_name"
+
+  - changeSet:
+      author: "Vitalii Ivanov"
+      id: "Create-table-employee"
+      preConditions:
+        onFail: "MARK_RAN"
+        not:
+          tableExists:
+            tableName: "employee"
+      changes:
+        - createTable:
+            tableName: "employee"
+            columns:
+              - column:
+                  name: "id"
+                  type: "bigint"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: "name"
+                  type: "varchar(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "last_name"
+                  type: "varchar(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "email"
+                  type: "varchar(255)"
+              - column:
+                  name: "department_id"
+                  type: "bigint"
+                  constraints:
+                    nullable: false
+                    foreignKeyName: "fk_employee_department"
+                    references: "department(id)"

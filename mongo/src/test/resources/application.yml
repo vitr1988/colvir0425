@@ -1,0 +1,12 @@
+spring:
+  main:
+    banner-mode: 'off'
+  data:
+    mongodb:
+      database: mongo-test
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.11.0
