@@ -4,9 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 @DisplayName("Приложение должно уметь ")
-public class AppTest {
+public class AppTest extends SpringBootAppTest {
 
     @Test
     @DisplayName("загружать свой контекст")

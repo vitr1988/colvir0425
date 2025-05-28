@@ -23,6 +23,11 @@
             <column name="count" type="bigint"/>
         </createTable>
 
+        <sql><![CDATA[
+            alter sequence departments_id_seq owned by departments.id;
+            ]]></sql>
+
+
         <addUniqueConstraint tableName="departments" columnNames="dep_name"/>
 
     </changeSet>

@@ -1,18 +1,19 @@
 spring:
   main:
     banner-mode: 'off'
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
+#  datasource:
+#    url: ${CONTAINER.URL}
+#    username: ${CONTAINER.USERNAME}
+#    password: ${CONTAINER.PASSWORD}
+#    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   jpa:
     generate-ddl: false
     hibernate:
       ddl-auto: none
-      dialect: org.hibernate.dialect.H2Dialect
     show-sql: true
-  shell:
-    interactive:
-      enabled: false
   liquibase:
-#    enabled: false
     change-log: 'classpath:db-scripts/changeLog.xml'
+#    url: ${CONTAINER.URL}
+#    user: ${CONTAINER.USERNAME}
+#    password: ${CONTAINER.PASSWORD}
+#    enabled: false

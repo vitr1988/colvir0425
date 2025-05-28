@@ -2,13 +2,12 @@ package com.colvir.webinar14.repository;
 
 import com.colvir.webinar10.model.Department;
 import com.colvir.webinar10.repository.DepartmentRepository;
+import com.colvir.webinar14.SpringBootAppTest;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +15,11 @@ import static java.util.function.Predicate.not;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_CLASS;
 
+@SpringBootTest
 @DisplayName("DAO для работы с департаментами на основе JPA должен ")
-@DataJpaTest
 @Transactional
 @DirtiesContext(classMode = BEFORE_CLASS)
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class DepartmentRepositoryTest {
+public class DepartmentRepositoryTest extends SpringBootAppTest {
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -35,6 +33,7 @@ public class DepartmentRepositoryTest {
                 .allMatch(not(s -> s.getName().isEmpty()));
         departments.forEach(System.out::println);
     }
+
     @DisplayName("уметь загружать информацию о конкретном департаменте по его идентификатору")
     @Test
     public void shouldFindExpectedDepartmentById(){
@@ -52,7 +51,6 @@ public class DepartmentRepositoryTest {
         val actualDepartment = departmentRepository.save(expectedDepartment);
         assertThat(actualDepartment).isEqualTo(expectedDepartment);
     }
-
 
     @DisplayName("уметь удалять департамент")
     @Test
