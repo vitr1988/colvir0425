@@ -40,7 +40,7 @@ public class SecurityConfiguration /*extends AbstractHttpConfigurer<SecurityConf
         http.csrf(AbstractHttpConfigurer::disable)
 //                .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/jwt").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/jwt", "/api/notifications").permitAll()
 //                        .requestMatchers("/api/employees").authenticated()
                         .requestMatchers("/api/employees/**").hasRole("ADMIN")
 //                        .requestMatchers("/api/departments").authenticated()

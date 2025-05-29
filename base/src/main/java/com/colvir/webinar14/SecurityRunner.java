@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = {"com.colvir.webinar14.model"})
 @EnableJpaRepositories(basePackages = {"com.colvir.webinar14.repository"})
 @ComponentScan(basePackages = {"com.colvir.webinar10", "com.colvir.webinar14"})
-@EnableConfigurationProperties(JwtProperties.class)
 public class SecurityRunner {
 
     public static void main(String[] args) {
