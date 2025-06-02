@@ -24,5 +24,6 @@ services:
       ACTIVEMQ_PASSWORD: admin
       ACTIVEMQ_WEBADMIN_USERNAME: adminui
       ACTIVEMQ_WEBADMIN_PASSWORD: admin
+      ACTIVEMQ_ENABLE_SCHEDULER: true
 volumes:
   artemis-mq-data:

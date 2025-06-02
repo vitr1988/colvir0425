@@ -12,6 +12,7 @@ public class MqRunner {
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(MqRunner.class, args);
         NotificationJmsProducer producer = applicationContext.getBean(NotificationJmsProducer.class);
-        producer.sendNotification(new NotificationDto(1L, "Hello World", NotificationDto.NotificationType.INFORM, "ru"));
+//        producer.sendBroadcastingNotification(new NotificationDto(1L, "Hello World", NotificationDto.NotificationType.INFORM, NotificationDto.Language.RU));
+        producer.sendNotification(new NotificationDto(1L, "Hello World", NotificationDto.NotificationType.INFORM, NotificationDto.Language.RU));
     }
 }
