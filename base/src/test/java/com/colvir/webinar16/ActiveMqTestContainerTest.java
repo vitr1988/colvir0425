@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -97,13 +98,14 @@ public class ActiveMqTestContainerTest {
         return sendNotificationConsumerWithSuppressException;
     }
 
+    @EnableJms
     @Configuration
     static class BrokerConfiguration {
 
         private static final String BROKER_URL_TEMPLATE = "tcp://%s:%d";
 
         @Bean
-        public JmsListenerContainerFactory createFactory() {
+        public JmsListenerContainerFactory<?> jmsListenerContainerFactory() {
             DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
             factory.setConnectionFactory(connectionFactory());
             return factory;
@@ -126,6 +128,15 @@ public class ActiveMqTestContainerTest {
         @Bean
         public ObjectMapper objectMapper() {
             return new ObjectMapper();
+        }
+
+        @Bean
+        public JmsListenerContainerFactory<?> topicFactory(
+                ConnectionFactory connectionFactory) {
+            DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+            factory.setConnectionFactory(connectionFactory);
+            factory.setPubSubDomain(true);
+            return factory;
         }
     }
 
