@@ -31,23 +31,23 @@ public class KafkaConfig {
 //        return new KafkaTemplate<>(producerConfig());
 //    }
 //
-    @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
-        Map<String, Object> bootstrapServersConfig = Map.of(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092",
-                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
-                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
-                ConsumerConfig.GROUP_ID_CONFIG, "EventConsumer");
-        return new DefaultKafkaConsumerFactory<>(bootstrapServersConfig);
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        factory.setCommonErrorHandler(new CommonErrorHandler() {
-        });
-        return factory;
-    }
+//    @Bean
+//    public ConsumerFactory<String, String> consumerFactory() {
+//        Map<String, Object> bootstrapServersConfig = Map.of(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092",
+//                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
+//                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
+//                ConsumerConfig.GROUP_ID_CONFIG, "EventConsumer");
+//        return new DefaultKafkaConsumerFactory<>(bootstrapServersConfig);
+//    }
+//
+//    @Bean
+//    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+//        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+//        factory.setConsumerFactory(consumerFactory());
+//        factory.setCommonErrorHandler(new CommonErrorHandler() {
+//        });
+//        return factory;
+//    }
 
     @Bean
     public NewTopic topic() {

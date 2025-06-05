@@ -33,7 +33,7 @@ class EmbeddedKafkaTest {
         producer.send(TOPIC_NAME, new EventDto(data));
 
         await().atMost(Duration.ofSeconds(1L)).until(() ->
-                Objects.equals(data, consumer.getEventDto()));
+                Objects.equals(data, consumer.getEventDto().getName()));
     }
 }
 
