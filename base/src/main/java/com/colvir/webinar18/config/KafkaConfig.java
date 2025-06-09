@@ -1,7 +1,9 @@
 package com.colvir.webinar18.config;
 
+import com.colvir.webinar18.dto.EventDto;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +11,15 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.CommonErrorHandler;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.kafka.retrytopic.DltStrategy;
+import org.springframework.kafka.retrytopic.RetryTopicConfiguration;
+import org.springframework.kafka.retrytopic.RetryTopicConfigurationBuilder;
+import org.springframework.util.backoff.FixedBackOff;
 
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -44,13 +53,30 @@ public class KafkaConfig {
 //    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
 //        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
 //        factory.setConsumerFactory(consumerFactory());
-//        factory.setCommonErrorHandler(new CommonErrorHandler() {
-//        });
+//        DefaultErrorHandler commonErrorHandler = new DefaultErrorHandler((consumerRecord, e) -> {
+//
+//        }, new FixedBackOff(1000L, 3));
+//        factory.setCommonErrorHandler(commonErrorHandler);
 //        return factory;
 //    }
 
     @Bean
     public NewTopic topic() {
         return TopicBuilder.name(TOPIC_NAME).partitions(2).build();
+    }
+
+    @Bean
+    public RetryTopicConfiguration retryTopicCreation(KafkaTemplate<String, EventDto> template) {
+        return RetryTopicConfigurationBuilder.newInstance()
+                .exponentialBackoff(1000, 2, 5000)
+                .maxAttempts(3)
+                .excludeTopics(List.of("test"))
+                .dltHandlerMethod("customDltProcessor", "processDltMessage")
+                .dltProcessingFailureStrategy(DltStrategy.FAIL_ON_ERROR)
+                .notRetryOn(
+                        List.of(
+                                NullPointerException.class,
+                                SerializationException.class))
+                .create(template);
     }
 }

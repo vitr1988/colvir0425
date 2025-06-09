@@ -1,6 +1,13 @@
 spring:
   application:
     name: &applicationName base-colvir
+  hazelcast:
+    config: classpath:hazelcast-client.yaml
+  cache:
+#    caffeine:
+#      spec: expireAfterWrite=5m
+#    type: caffeine
+    type: hazelcast
   kafka:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer

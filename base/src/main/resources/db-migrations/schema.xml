@@ -56,4 +56,20 @@
         </createTable>
     </changeSet>
 
+    <changeSet author="Vitalii Ivanov" id="Create-table-cities">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cities"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cities">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
