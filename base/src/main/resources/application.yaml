@@ -1,13 +1,16 @@
 spring:
   application:
     name: &applicationName base-colvir
-  hazelcast:
-    config: classpath:hazelcast-client.yaml
+#  hazelcast:
+#    config: classpath:hazelcast-client.yaml
   cache:
 #    caffeine:
 #      spec: expireAfterWrite=5m
 #    type: caffeine
-    type: hazelcast
+#    type: hazelcast
+    type: jcache
+    jcache:
+      config: classpath:ehcache.xml
   kafka:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -37,11 +40,20 @@ spring:
   jpa:
     open-in-view: false
     generate-ddl: false
-    show-sql: true
+#    show-sql: true
     hibernate:
       ddl-auto: validate
     properties:
-      hibernate.format_sql: true
+      hibernate:
+        cache.use_query_cache: true
+#        format_sql: true
+        javax.cache:
+          provider: org.ehcache.jsr107.EhcacheCachingProvider
+          uri: ehcache.xml
+          cache:
+            use_second_level_cache: true
+            region.factory_class: jcache
+#            region.factory_class: org.hibernate.cache.jcache.internal.JCacheRegionFactory
   liquibase:
     change-log: 'classpath:db-migrations/changeLog.xml'
 
@@ -62,3 +74,21 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
   packages-to-scan: com.colvir.webinar5
+
+logging:
+  config: classpath:logback.xml
+
+management:
+  endpoints.web.exposure.include: 'prometheus, metrics, info, health, env, refresh, beans, mappings'
+#  endpoints.web.exposure.include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+    metrics:
+      access: read_only
+    prometheus:
+      access: read_only
+  prometheus:
+    metrics:
+      export:
+        enabled: true
