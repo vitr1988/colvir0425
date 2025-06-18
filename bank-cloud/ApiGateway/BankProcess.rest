@@ -1,0 +1,57 @@
+### Generate client
+GET http://localhost/client/create?name=Vitalii
+
+### Get client info
+GET http://localhost/client/get
+
+### Update client name
+GET http://localhost/client/update/1?name=Vitalii Ivanov
+
+### Get info about client with id 1
+GET http://localhost/client/get/1
+
+### Generate another client
+GET http://localhost/client/create?name=Petr Petrov
+
+### Delete client with id 2
+GET http://localhost/client/delete/2
+
+### Get info about client with id 2
+GET http://localhost/client/get/2
+
+### Create account for the client
+GET http://localhost/account/create?client_id=1
+
+### Put some money to the account
+GET http://localhost/account/fund/1?sum=1000
+
+### Spend some money
+GET http://localhost/account/checkout/1?sum=100
+
+### Get info about the account
+GET http://localhost/account/get/1
+
+### Generate card number
+GET http://localhost/card/create?accountId=1
+
+### Generate credit card
+GET http://localhost/processing/issue/1
+Accept: application/json
+
+### Retrieve card number for the account
+GET http://localhost/processing/get?account_id=1
+
+> {%
+    client.global.set("card_number", response.body.card);
+%}
+
+### Spend some money
+GET http://localhost/processing/checkout/{{card_number}}?sum=100
+
+### Get info about the account
+GET http://localhost/account/get/1
+
+
+
+
+

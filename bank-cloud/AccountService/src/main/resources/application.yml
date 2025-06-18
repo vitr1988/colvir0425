@@ -1,0 +1,113 @@
+spring:
+  application:
+    name: &applicationName AccountService
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+    function:
+      definition: "accountCards"
+    stream:
+      bindings:
+        accountCards-in-0:
+          destination: colvir.cards
+          group: *applicationName
+  kafka:
+    consumer:
+      group-id: *applicationName
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.colvir.dto"
+#      auto-offset-reset: latest # by default, earliest
+  main:
+    banner-mode: 'off'
+
+server:
+  port: 8802
+
+spring.datasource:
+  url: jdbc:h2:file:./AccountService;DB_CLOSE_ON_EXIT=FALSE
+  driverClassName: org.h2.Driver
+  username: sa
+  password:
+
+spring.jpa:
+  open-in-view: false
+  database-platform: org.hibernate.dialect.H2Dialect
+  hibernate.ddl-auto: create-drop
+  generate-ddl: true
+  properties.hibernate.hbm2ddl.auto: create-drop
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+resilience4j.circuitbreaker:
+#  CommonCircuitBreakerConfigurationProperties.InstanceProperties
+  instances:
+#    default:
+#      registerHealthIndicator: true
+#      slidingWindowSize: 100
+    account:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType : TIME_BASED
+      minimumNumberOfCalls: 20
+      waitDurationInOpenState: 50s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+
+resilience4j.retry:
+  instances:
+    account:
+      maxAttempts: 3
+      waitDuration: 10s
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      retryExceptions:
+        - java.lang.IllegalArgumentException
+
+resilience4j.bulkhead:
+  instances:
+    account:
+      maxWaitDuration: 10ms
+      maxConcurrentCalls: 10
+
+resilience4j.thread-pool-bulkhead:
+  instances:
+    account:
+      maxThreadPoolSize: 1
+      coreThreadPoolSize: 1
+      queueCapacity: 1
+
+resilience4j.ratelimiter:
+  instances:
+    account:
+      limitForPeriod: 10
+      limitRefreshPeriod: 1s
+      timeoutDuration: 0
+      registerHealthIndicator: true
+      eventConsumerBufferSize: 100
+
+resilience4j.timelimiter:
+  instances:
+    account:
+      timeoutDuration: 2s
+      cancelRunningFuture: true
+
+management:
+  endpoints.web.exposure.include: 'prometheus, metrics, info, health, env'
+  endpoint:
+    metrics:
+      access: read_only
+    prometheus:
+      access: read_only
+  prometheus:
+    metrics:
+      export:
+        enabled: true

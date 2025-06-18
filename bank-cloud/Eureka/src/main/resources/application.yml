@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: Eureka
+  main:
+    banner-mode: 'off'
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  #    ip-address: 127.0.0.1
+#  server:
+#    enable-self-preservation: false
+#    renewal-percent-threshold: 0.85
+  client:
+#    fetch-registry: false
+    fetch-registry: true
+#    register-with-eureka: false
+    register-with-eureka: true
+
+management:
+  endpoints.web.exposure.include: 'prometheus, metrics, info, health, env'
+  endpoint:
+    metrics:
+      access: read_only
+    prometheus:
+      access: read_only
+  prometheus:
+    metrics:
+      export:
+        enabled: true

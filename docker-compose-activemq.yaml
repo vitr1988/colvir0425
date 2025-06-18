@@ -7,8 +7,8 @@ services:
     ports:
       # mqtt
       - "1883:1883"
-      # amqp
-      - "5672:5672"
+#      # amqp - used for rabbitmq
+#      - "5672:5672"
       # ui
       - "8161:8161"
       # stomp

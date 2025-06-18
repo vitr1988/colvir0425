@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: CardService
+  cloud:
+    stream:
+      default:
+        producer:
+          use-native-encoding: true # avoid Base64-encoding of message payload for all producers
+      bindings:
+        notifications:
+          destination: colvir.cards
+  kafka:
+#    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  main:
+    banner-mode: 'off'
+
+server:
+  port: 8803
+#  port: 0
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# can be used random port together with server.port = 0
+#  instance:
+#    instance-id: ${spring.application.name}:${random.int}
+
+management:
+  endpoints.web.exposure.include: 'prometheus, metrics, info, health, env'
+  endpoint:
+    metrics:
+      access: read_only
+    prometheus:
+      access: read_only
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
