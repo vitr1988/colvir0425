@@ -98,12 +98,16 @@
     </build>
 
     <modules>
+        <module>CommonEvents</module>
+        <module>CommonAccountOperations</module>
         <module>Eureka</module>
         <module>ApiGateway</module>
+        <module>ConfigServer</module>
         <module>AccountService</module>
         <module>CardService</module>
         <module>ClientService</module>
         <module>ProcessingService</module>
+        <module>HistoryService</module>
     </modules>
 
 </project>

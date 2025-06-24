@@ -1,0 +1,25 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="Vitalii Ivanov" id="Create-table-clients">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="clients"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="client_id_seq" startValue="1" incrementBy="1" cycle="true"/>
+        <createTable tableName="clients">
+            <column name="id" type="bigint" defaultValueSequenceNext="client_id_seq">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+        </createTable>
+        <sql><![CDATA[
+            alter sequence client_id_seq owned by clients.id;
+        ]]></sql>
+    </changeSet>
+
+</databaseChangeLog>

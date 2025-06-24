@@ -1,0 +1,2 @@
+### Get actual values from application.yaml on the local file system
+GET http://localhost:8600/actuator/bus-refresh

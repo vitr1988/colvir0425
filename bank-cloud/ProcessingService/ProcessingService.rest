@@ -3,7 +3,7 @@ GET http://localhost:8804/issue/1
 Accept: application/json
 
 #### Spend some money
-GET http://localhost:8804/checkout/4444900057006147?sum=300
+GET http://localhost:8804/checkout/8699342625298992?sum=50
 
 #### Retrieve card number for the account
 GET http://localhost:8804/get?account_id=1

@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: ConfigServer
+  main:
+    banner-mode: off
+  cloud:
+    bus:
+      enabled: true
+    config:
+      server:
+        git:
+          uri: file://${user.home}/config-repo
+#          uri: file:///${user.home}/config-repo # for WinOS
+#          uri: https://github.com/vitr1988/config-repo
+#          search-paths:
+#            - colvir
+      stream:
+        kafka:
+          binder:
+            zkNodes: localhost:2181
+            brokers: localhost:9092
+server:
+  port: 8600
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/, http://localhost:8762/eureka/
+
+management:
+  endpoints.web.exposure.include: 'prometheus, metrics, info, health, env, refresh, bus-refresh'
+  endpoint:
+    metrics:
+      access: read_only
+    prometheus:
+      access: read_only
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+
+

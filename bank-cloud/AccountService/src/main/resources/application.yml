@@ -1,6 +1,8 @@
 spring:
   application:
     name: &applicationName AccountService
+  config:
+    import: optional:configserver:http://localhost:8600
   cloud:
     openfeign:
       circuitbreaker:
@@ -8,11 +10,24 @@ spring:
     function:
       definition: "accountCards"
     stream:
+      default:
+        producer:
+          use-native-encoding: true # avoid Base64-encoding of message payload for all producers
       bindings:
         accountCards-in-0:
           destination: colvir.cards
           group: *applicationName
+      kafka:
+        binder:
+          zkNodes: localhost:2181
+          brokers: localhost:9092
+    config:
+      uri: http://localhost:8600
+      enabled: true
   kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       group-id: *applicationName
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -22,29 +37,38 @@ spring:
 #      auto-offset-reset: latest # by default, earliest
   main:
     banner-mode: 'off'
+  datasource:
+    url: jdbc:postgresql://localhost:5432/account
+    username: account
+    password: account
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: 'classpath:db-migrations/changeLog.xml'
 
 server:
   port: 8802
 
-spring.datasource:
-  url: jdbc:h2:file:./AccountService;DB_CLOSE_ON_EXIT=FALSE
-  driverClassName: org.h2.Driver
-  username: sa
-  password:
+#spring.datasource:
+##  url: jdbc:h2:file:./AccountService;DB_CLOSE_ON_EXIT=FALSE
+#  url: jdbc:h2:tcp://localhost:1521/~./AccountService
+#  driverClassName: org.h2.Driver
+#  username: sa
+#  password:
 
 spring.jpa:
   open-in-view: false
-  database-platform: org.hibernate.dialect.H2Dialect
-  hibernate.ddl-auto: create-drop
-  generate-ddl: true
-  properties.hibernate.hbm2ddl.auto: create-drop
+#  database-platform: org.hibernate.dialect.H2Dialect
+  hibernate.ddl-auto: validate
+  generate-ddl: false
+#  properties.hibernate.hbm2ddl.auto: create-drop
 
 eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/, http://localhost:8762/eureka/
+#    enabled: false
 
 resilience4j.circuitbreaker:
 #  CommonCircuitBreakerConfigurationProperties.InstanceProperties
@@ -101,7 +125,7 @@ resilience4j.timelimiter:
       cancelRunningFuture: true
 
 management:
-  endpoints.web.exposure.include: 'prometheus, metrics, info, health, env'
+  endpoints.web.exposure.include: 'prometheus, metrics, info, health, env, refresh'
   endpoint:
     metrics:
       access: read_only
@@ -111,3 +135,14 @@ management:
     metrics:
       export:
         enabled: true
+
+#spring.cloud:
+#  loadbalancer:
+#    configurations: health-check
+#    health-check:
+#      path:
+#        AccountService: /actuator/health
+#
+#  discovery.client.simple.instances:
+#    AccountService: # instances of servers
+#    - uri: http://localhost:8090

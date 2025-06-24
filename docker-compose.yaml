@@ -16,19 +16,36 @@ services:
     ports:
       - "8081:8090"
 
+  db-init:
+    image: postgres:17.4-alpine
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=client:client,account:account,processing:processing
+      - POSTGRES_USER=colvir
+      - POSTGRES_PASSWORD=colvir
+      - POSTGRES_HOST=db.db-backend
+    volumes:
+      - ./config/postgres/entrypoint:/docker-entrypoint-initdb.d
+    entrypoint: "/docker-entrypoint-initdb.d/001-create-multiple-postgresql-databases.sh"
+    networks:
+      db-backend:
+
   db:
-    #    platform: linux/x86_64
     image: postgres:17.4-alpine
     container_name: postgres_17
     restart: always
     environment:
-      - POSTGRES_DB=colvir
-      - POSTGRES_USER=colvir
-      - POSTGRES_PASSWORD=colvir
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
     ports:
       - '5432:5432'
     volumes:
       - ./postgres-volume:/var/lib/postgresql/data
+    networks:
+      db-backend:
+        aliases:
+          - db.db-backend
 
   adminer:
     image: adminer
@@ -40,3 +57,6 @@ services:
 
 volumes:
   postgres-volume:
+
+networks:
+  db-backend:

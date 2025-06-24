@@ -1,0 +1,8 @@
+### Get info about operations in history
+GET http://localhost:8807/
+
+### Get info about config server parameter
+GET http://localhost:8807/config-server
+
+### Refresh config parameters
+POST http://localhost:8807/actuator/refresh

@@ -1,7 +1,9 @@
 package com.colvir.controller;
 
-import com.colvir.domain.Account;
+import com.colvir.config.InfoProperties;
+import com.colvir.dto.AccountDto;
 import com.colvir.service.AccountService;
+import com.colvir.web.AccountOperations;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
@@ -20,11 +22,13 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class AccountController {
+public class AccountController implements AccountOperations {
 
     private static final String ACCOUNT_CIRCUIT_BREAKER_NAME = "account";
 
     private final AccountService accountService;
+
+    private final InfoProperties infoProperties;
 
     @GetMapping("/create")
     public Long createAccount(@RequestParam("client_id") Long clientId) {
@@ -45,9 +49,14 @@ public class AccountController {
     }
 
     @GetMapping("/get/{id}")
-    public Optional<Account> getAccount(@PathVariable Long id) {
+    public Optional<AccountDto> getAccount(@PathVariable Long id) {
         log.info("Getting client with id {}", id);
         return accountService.findById(id);
+    }
+
+    @GetMapping("/config-server")
+    public String getConfigServerValue() {
+        return infoProperties.getFoo();
     }
 
     @Async

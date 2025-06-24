@@ -14,6 +14,11 @@
     </parent>
     <dependencies>
         <dependency>
+            <groupId>com.colvir</groupId>
+            <artifactId>common-acount-operations</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>

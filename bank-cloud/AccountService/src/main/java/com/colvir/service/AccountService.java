@@ -1,6 +1,6 @@
 package com.colvir.service;
 
-import com.colvir.domain.Account;
+import com.colvir.dto.AccountDto;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -13,5 +13,5 @@ public interface AccountService {
 
     void withdrawAccount(Long id, BigDecimal sum);
 
-    Optional<Account> findById(Long id);
+    Optional<AccountDto> findById(Long id);
 }
