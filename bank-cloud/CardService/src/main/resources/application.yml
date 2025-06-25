@@ -9,6 +9,9 @@ spring:
       bindings:
         notifications:
           destination: colvir.cards
+    bus:
+      ack:
+        enabled: false
   kafka:
 #    bootstrap-servers: localhost:9092
     producer:
@@ -33,7 +36,7 @@ eureka:
 #    instance-id: ${spring.application.name}:${random.int}
 
 management:
-  endpoints.web.exposure.include: 'prometheus, metrics, info, health, env'
+  endpoints.web.exposure.include: 'prometheus, metrics, info, health, env, refresh'
   endpoint:
     metrics:
       access: read_only

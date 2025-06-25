@@ -4,6 +4,7 @@ import com.colvir.dto.AbstractFinancialEvent;
 import com.colvir.dto.DepositEvent;
 import com.colvir.dto.OperationInfoDto;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationListener;
@@ -17,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static com.colvir.dto.OperationInfoDto.OperationType.DEPOSIT;
 import static com.colvir.dto.OperationInfoDto.OperationType.WITHDRAW;
 
+@Slf4j
 @RefreshScope
 @RestController
 public class HistoryController implements ApplicationListener<AbstractFinancialEvent> {
@@ -31,6 +33,7 @@ public class HistoryController implements ApplicationListener<AbstractFinancialE
 
     @Override
     public void onApplicationEvent(AbstractFinancialEvent event) {
+        log.info("Financial operation happened {}", event);
         historyOperations.add(new OperationInfoDto(event.getAccountId(), event.getSum(),
                 event instanceof DepositEvent ? DEPOSIT : WITHDRAW,
                 new Date(event.getTimestamp())));

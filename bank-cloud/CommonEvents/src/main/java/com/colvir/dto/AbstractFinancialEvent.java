@@ -8,11 +8,20 @@ import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor
-public abstract class AbstractFinancialEvent extends RemoteApplicationEvent {
+public abstract class AbstractFinancialEvent
+//        extends ApplicationEvent
+        extends RemoteApplicationEvent
+{
 
     private Long accountId;
 
     private BigDecimal sum;
+
+//    public AbstractFinancialEvent(Object source, Long accountId, BigDecimal sum) {
+//        super(source);
+//        this.sum = sum;
+//        this.accountId = accountId;
+//    }
 
     public AbstractFinancialEvent(Object source, String originService, String destinationService, Long accountId, BigDecimal sum) {
         super(source, originService, destinationService);

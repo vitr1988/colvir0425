@@ -24,6 +24,9 @@ spring:
     config:
       uri: http://localhost:8600
       enabled: true
+    bus:
+      ack:
+        enabled: false
   kafka:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -33,7 +36,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "com.colvir.dto"
+        spring.json.trusted.packages: "com.colvir.dto, org.springframework.cloud.bus.event"
 #      auto-offset-reset: latest # by default, earliest
   main:
     banner-mode: 'off'

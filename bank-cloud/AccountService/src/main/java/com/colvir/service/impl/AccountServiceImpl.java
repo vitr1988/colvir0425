@@ -9,7 +9,10 @@ import com.colvir.mapper.AccountMapper;
 import com.colvir.repository.AccountRepository;
 import com.colvir.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.bus.BusBridge;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -30,7 +33,14 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
 
     private final BusBridge busClient;
+//    private final ApplicationContext busClient;
 //    private final ApplicationEventPublisher busClient;
+
+    @Value("${spring.application.name}")
+    private String applicationName;
+
+    @Value("${server.port}")
+    private Integer originHostPort;
 
     @Override
     public Long createAccount(Long clientId) {
@@ -50,12 +60,14 @@ public class AccountServiceImpl implements AccountService {
         try {
             accountRepository.addBalance(accountId, money);
         } finally {
+//            busClient.send(new DepositEvent(this, applicationName, null, accountId, money));
             busClient.send(new DepositEvent(this, "AccountService", "HistoryService", accountId, money));
+//            busClient.publishEvent(new DepositEvent(this, applicationName, "*:**", accountId, money));
         }
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = IllegalArgumentException.class)
     public void withdrawAccount(Long accountId, BigDecimal money) {
         try {
             accountRepository.findById(accountId)
@@ -66,7 +78,12 @@ public class AccountServiceImpl implements AccountService {
                                     accountRepository.addBalance(accountId, MINUS_ONE.multiply(money))
                     );
         } finally {
-            busClient.send(new WithdrawEvent(this, "AccountService", "HistoryService:**", accountId, money));
+//            busClient.send(new WithdrawEvent(this, applicationName, null, accountId, money));
+            busClient.send(new WithdrawEvent(this, applicationName, "HistoryService:**", accountId, money));
+//            busClient.publishEvent(new WithdrawEvent(this, applicationName, "*:**", accountId, money));
+        }
+        if (money.intValue() % 2 == 0) {
+            throw new IllegalArgumentException("Has no client with id: %d".formatted(accountId));
         }
     }
 

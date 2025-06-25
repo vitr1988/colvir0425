@@ -9,7 +9,7 @@ spring:
     bus:
       ack:
         enabled: false
-
+      enabled: true
 
 server:
   port: 8807

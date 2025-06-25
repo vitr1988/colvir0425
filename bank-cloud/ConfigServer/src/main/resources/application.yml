@@ -6,6 +6,12 @@ spring:
   cloud:
     bus:
       enabled: true
+      ack:
+        enabled: false
+    stream:
+      default:
+        producer:
+          use-native-encoding: true # avoid Base64-encoding of message payload for all producers
     config:
       server:
         git:
@@ -19,6 +25,10 @@ spring:
           binder:
             zkNodes: localhost:2181
             brokers: localhost:9092
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 server:
   port: 8600
 
