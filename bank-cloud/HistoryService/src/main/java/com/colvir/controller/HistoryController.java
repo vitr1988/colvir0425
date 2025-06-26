@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +21,9 @@ import static com.colvir.dto.OperationInfoDto.OperationType.WITHDRAW;
 @Slf4j
 @RefreshScope
 @RestController
-public class HistoryController implements ApplicationListener<AbstractFinancialEvent> {
+public class HistoryController
+//        implements ApplicationListener<AbstractFinancialEvent>
+{
 
     @Getter(onMethod_ = @GetMapping)
     private static final List<OperationInfoDto> historyOperations = new CopyOnWriteArrayList<>();
@@ -31,7 +33,8 @@ public class HistoryController implements ApplicationListener<AbstractFinancialE
         return foo;
     }
 
-    @Override
+//    @Override
+    @EventListener(AbstractFinancialEvent.class)
     public void onApplicationEvent(AbstractFinancialEvent event) {
         log.info("Financial operation happened {}", event);
         historyOperations.add(new OperationInfoDto(event.getAccountId(), event.getSum(),
