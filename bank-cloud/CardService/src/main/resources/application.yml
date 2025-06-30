@@ -12,6 +12,8 @@ spring:
     bus:
       ack:
         enabled: false
+      trace:
+        enabled: true
   kafka:
 #    bootstrap-servers: localhost:9092
     producer:
@@ -19,6 +21,22 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   main:
     banner-mode: 'off'
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8500/realms/example/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8500/realms/example
+        registration:
+          gateway-client:
+            provider: keycloak
+            client-id: gateway-client
+            client-secret: YuxW0c4MKlVcFJFB58JRN7yFFaEIoDdO
+            authorization-grant-type: authorization_code
+            scope: openid
 
 server:
   port: 8803
@@ -46,4 +64,7 @@ management:
     metrics:
       export:
         enabled: true
+  tracing:
+    sampling:
+      probability: 1
 

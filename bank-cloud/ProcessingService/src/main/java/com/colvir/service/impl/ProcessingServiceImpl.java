@@ -1,5 +1,6 @@
 package com.colvir.service.impl;
 
+import com.colvir.config.OAuth2AccessTokenManager;
 import com.colvir.domain.Processing;
 import com.colvir.dto.ProcessingDto;
 import com.colvir.feign.AccountServiceClient;
@@ -32,7 +33,9 @@ public class ProcessingServiceImpl implements ProcessingService {
         if (accountServiceClient.getAccount(accountId).isEmpty()) {
             throw new IllegalArgumentException("Has no such account with id: " + accountId);
         }
-        final String cardNumber = cardServiceClient.generateCardNumber(accountId);
+        final String cardNumber = cardServiceClient.generateCardNumber(accountId
+//                , new OAuth2AccessTokenManager().getAccessToken()
+        );
         return transactionTemplate.execute(status -> {
             Processing processingEntity = new Processing(accountId, cardNumber);
             processingRepository.save(processingEntity);

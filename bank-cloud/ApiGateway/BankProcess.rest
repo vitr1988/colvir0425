@@ -1,3 +1,6 @@
+### Firstly get access token here http://localhost/getAccessToken
+@access_token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJRenNpS3RQZ3daSC0zMzQ5dmtrWklZTWMyTU9qT24xRFpKYzFqR2pKdkswIn0.eyJleHAiOjE3NTEzMTA3MDIsImlhdCI6MTc1MTMxMDQwMiwiYXV0aF90aW1lIjoxNzUxMzA5MTEwLCJqdGkiOiJmNzhjZGE5NC0wZDczLTRiMDAtODUxNC1kMGVkMjMyMjZlOWEiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0Ojg1MDAvcmVhbG1zL2V4YW1wbGUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiYTRjZTNmZGItNzkwNS00ZGZhLTgyODItNGQxOWEyOGJhYmMxIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZ2F0ZXdheS1jbGllbnQiLCJub25jZSI6ImhqZ2I3OHN5UWVMZWFJS2l3b19sRlBXSDZRc21yN1FlcXNtbUdUWkg2eEEiLCJzZXNzaW9uX3N0YXRlIjoiOWMzYTlhMzItMjcwOC00YzgwLTgyNWItMmU5NmM2MzhkNzI2IiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLWV4YW1wbGUiLCJ1bWFfYXV0aG9yaXphdGlvbiIsIlJPTEVfQ0FOX0NBUkRfR0VORVJBVEUiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiOWMzYTlhMzItMjcwOC00YzgwLTgyNWItMmU5NmM2MzhkNzI2IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0In0.m3fqqiH0gZ2OCKKduQAMFfnkgCWuS5_I_WafRcVm6UecUEvscmCOCSldjbGUf6W038zlwDRLLFuswzTa1LJTZbMLZocNrgt7A3qzSDSSqwN6gtRrAsEGEvmgVNwrStK6_M1CrFzjaMsLjB0T7XLiYSUuDyUzAnPCAxwkeBL4SGYwP8NQWC6hFBzla0IFreY4pKldF6ZYKk-Kq9JZm1cNI9vINbYQFsqy102QfzxWEZYlqltnApkcyyxZ_23sbjPb7VZS2zCdFnCEfMTcX2tsM6CYzhqrFcjhOtkJHKMDONTHDCwA91YdQ0_d-cqqC7ZEqDpCIRq4IA1GPLp-AgcLKA
+
 ### Generate client
 GET http://localhost/client/create?name=Vitalii
 
@@ -33,13 +36,16 @@ GET http://localhost/account/get/1
 
 ### Generate card number
 GET http://localhost/card/create?accountId=1
+Authorization: Bearer {{access_token}}
 
 ### Generate credit card
 GET http://localhost/processing/issue/1
 Accept: application/json
+Authorization: Bearer {{access_token}}
 
 ### Retrieve card number for the account
 GET http://localhost/processing/get?account_id=1
+Authorization: Bearer {{access_token}}
 
 > {%
     client.global.set("card_number", response.body.card);
@@ -47,6 +53,7 @@ GET http://localhost/processing/get?account_id=1
 
 ### Spend some money
 GET http://localhost/processing/checkout/{{card_number}}?sum=100
+Authorization: Bearer {{access_token}}
 
 ### Get info about the account
 GET http://localhost/account/get/1

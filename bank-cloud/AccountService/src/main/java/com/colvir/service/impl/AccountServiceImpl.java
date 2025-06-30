@@ -82,9 +82,9 @@ public class AccountServiceImpl implements AccountService {
             busClient.send(new WithdrawEvent(this, applicationName, "HistoryService:**", accountId, money));
 //            busClient.publishEvent(new WithdrawEvent(this, applicationName, "*:**", accountId, money));
         }
-        if (money.intValue() % 2 == 0) {
-            throw new IllegalArgumentException("Has no client with id: %d".formatted(accountId));
-        }
+//        if (money.intValue() % 2 == 0) {
+//            throw new IllegalArgumentException("Has no client with id: %d".formatted(accountId));
+//        }
     }
 
     @Override

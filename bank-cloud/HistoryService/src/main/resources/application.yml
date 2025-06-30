@@ -10,6 +10,8 @@ spring:
       ack:
         enabled: false
       enabled: true
+      trace:
+        enabled: true
 
 server:
   port: 8807
@@ -30,3 +32,6 @@ management:
     metrics:
       export:
         enabled: true
+  tracing:
+    sampling:
+      probability: 1

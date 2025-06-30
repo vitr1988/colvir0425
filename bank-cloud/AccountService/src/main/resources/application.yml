@@ -27,6 +27,8 @@ spring:
     bus:
       ack:
         enabled: false
+      trace:
+        enabled: true
   kafka:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -138,6 +140,9 @@ management:
     metrics:
       export:
         enabled: true
+  tracing:
+    sampling:
+      probability: 1
 
 #spring.cloud:
 #  loadbalancer:

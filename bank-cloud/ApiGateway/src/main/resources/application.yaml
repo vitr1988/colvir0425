@@ -7,6 +7,8 @@ spring:
     gateway:
       server:
         webflux:
+#          default-filters:
+#            - TokenRelay=
           routes:
             - id: account_route
               uri: lb://AccountService
@@ -26,12 +28,30 @@ spring:
                 - Path=/card/**
               filters:
                 - StripPrefix=1
+                - TokenRelay=
             - id: processing_route
               uri: lb://ProcessingService
               predicates:
                 - Path=/processing/**
               filters:
                 - StripPrefix=1
+                - TokenRelay=
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8500/realms/example/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8500/realms/example
+        registration:
+          gateway-client:
+            provider: keycloak
+            client-id: gateway-client
+            client-secret: OwUVQXvWoqSsvx0GVpYO5OQWsxdLTTid
+            authorization-grant-type: authorization_code
+            scope: openid
 
 eureka:
   client:
@@ -52,3 +72,6 @@ management:
     metrics:
       export:
         enabled: true
+  tracing:
+    sampling:
+      probability: 1
