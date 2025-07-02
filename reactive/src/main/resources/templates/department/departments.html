@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all departments</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="css/style.css">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.7/css/bootstrap.min.css}" href="/webjars/bootstrap/5.3.7/css/bootstrap.min.css" />
+    <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}" src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            fillData();
+        });
+
+        function fillData(page) {
+            $.get('/api/departments' + (page ? '?page=' + page : ''), function (result) {
+                let rowsData = '';
+                for (let i = 0; i < result.length; i++) {
+                    let department = result[i];
+                    rowsData += '<tr><td>' + department.id + '</td>' +
+                        '<td>' + department.name + '</td>' +
+                        '<td><a href="/department/edit?id=' + department.id + '"><img title="Edit" src="/images/edit.png"/></a>' +
+                        '<a data-id="department_' + department.id + '" href="department.html"><img title="Delete" src="/images/delete.png"/></a>' +
+                        '</td></tr>';
+                }
+                let departmentDataElement = $('#departmentData');
+                departmentDataElement.html(rowsData);
+                $('a[data-id^=department_]').one('click', function (event) {
+                    if (confirm('Are you sure to delete this department?')) {
+                        let departmentId = $(this).attr('data-id').replace('department_', '');
+                        $.ajax({
+                            url: '/api/departments/' + departmentId,
+                            type: 'DELETE',
+                            success: function () {
+                                location.href = '/departments';
+                            }
+                        });
+                    }
+                    event.preventDefault();
+                });
+            });
+        }
+    </script>
+</head>
+<body>
+<p><strong>Departments:</strong></p>
+<table class="departments">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="departmentData"/>
+</table>
+<div id="toolbar">
+    <a th:href="@{/}" href="../index.html"><img title="Back" th:src="@{/images/back.png}"/></a>
+    <a th:href="@{/department/add}" href="department.html"><img title="Add" th:src="@{/images/add.png}"/></a>
+</div>
+</body>
+</html>

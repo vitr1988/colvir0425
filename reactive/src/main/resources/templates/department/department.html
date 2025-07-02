@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add/Edit/View department</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.7/css/bootstrap.min.css}" href="/webjars/bootstrap/5.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<form id="add-form" th:action="@{/department/save}" th:if="${department == null}" method="post" action="department.html">
+    <p><strong>Add new department:</strong></p>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" name="id" type="number" required="required"/>
+    </div>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="name" type="text" required="required" maxlength="120" />
+    </div>
+
+    <div class="row">
+        <a th:href="@{/departments}" href="departments.html"><img title="Back" th:src="@{/images/back.png}"/></a>
+        <button type="submit"><img title="Save" th:src="@{/images/save.png}"/></button>
+    </div>
+</form>
+<form id="edit-form" th:action="@{/department/save(id=${department.id})}" th:unless="${department == null}" method="post"
+      action="department.html" th:object="${department}">
+    <p><strong>Department Info:</strong></p>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="number" th:value="*{id}" readonly="readonly" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="name" type="text" th:value="*{name}" required="required" maxlength="120" value="Art"/>
+    </div>
+
+    <div class="row">
+        <a th:href="@{/departments}" href="departments.html"><img title="Back" th:src="@{/images/back.png}"/></a>
+        <button type="submit"><img title="Save" th:src="@{/images/save.png}"/></button>
+    </div>
+</form>
+</body>
+</html>

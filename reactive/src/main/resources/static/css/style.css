@@ -1,0 +1,59 @@
+#labelText {
+    float: left;
+}
+
+.body {
+    margin: 0px 0px 0px 0px;
+    margin-bottom: 2px;
+}
+
+body {
+    color: green;
+}
+
+.holder {
+    height: 100px;
+    width: 200px;
+    background: red;
+}
+
+#labelText:read-only {
+    float: left;
+}
+
+#errorLabel {
+    display: none;
+}
+
+.loginPanel {
+    position: absolute;
+    right: 5px;
+}
+
+.loginName {
+    padding-right: 5px;
+}
+
+.logoutButton {
+    float: right;
+    cursor: pointer;
+}
+
+.row {
+    margin-left: 0 !important;
+}
+
+.row > * {
+    width: auto !important;
+    padding-left: 0 !important;
+}
+
+
+.row > button {
+    border: 0 !important;
+    background: white !important;
+}
+
+.menuItem {
+    padding-left: 0;
+}

@@ -36,6 +36,12 @@ spring:
               filters:
                 - StripPrefix=1
                 - TokenRelay=
+            - id: history_route
+              uri: lb://HistoryService
+              predicates:
+                - Path=/history/**
+              filters:
+                - StripPrefix=1
   security:
     oauth2:
       resourceserver:
@@ -75,3 +81,7 @@ management:
   tracing:
     sampling:
       probability: 1
+
+logging:
+  level:
+    root: debug

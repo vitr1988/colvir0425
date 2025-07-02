@@ -1,0 +1,21 @@
+### Upload file to S3
+POST http://localhost:8809/file HTTP/1.1
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="file.txt"
+
+// The 'file.txt' file will be uploaded
+< /Users/vitalijivanov/JavaProjects/colvir0425/bank-cloud/StorageService/file.txt
+
+--boundary
+
+
+### Download file from S3
+GET http://localhost:8809/file?fileName=file.txt
+
+### Delete file from S3
+DELETE http://localhost:8809/file?fileName=file.txt
+
+### Download file from S3
+GET http://localhost:8809/file?fileName=file.txt

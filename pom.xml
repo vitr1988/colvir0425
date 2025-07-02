@@ -15,6 +15,7 @@
         <module>mongo</module>
         <module>web</module>
         <module>junit</module>
+        <module>reactive</module>
     </modules>
     <properties>
         <testcontainers.version>1.20.6</testcontainers.version>
