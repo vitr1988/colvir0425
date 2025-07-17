@@ -16,6 +16,7 @@
         <module>web</module>
         <module>junit</module>
         <module>reactive</module>
+        <module>delivery-track</module>
     </modules>
     <properties>
         <testcontainers.version>1.20.6</testcontainers.version>
